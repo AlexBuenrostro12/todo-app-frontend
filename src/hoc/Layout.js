@@ -1,10 +1,13 @@
 import React from 'react';
 import Auxiliar from './Auxiliar';
+import SignIn from '../components/LogComponents/SignIn';
+import SignUp from '../components/LogComponents/SignUp';
 
 
 const Layout = (props) => (
   <Auxiliar>
-      <h1>Hello</h1>
+      <SignIn />
+      {/* <SignUp /> */}
   </Auxiliar>
 );
 

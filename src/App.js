@@ -1,5 +1,4 @@
 import React from 'react';
-import './App.css';
 import Layout from './hoc/Layout';
 import ApolloClient, { gql } from 'apollo-boost';
 import { ApolloProvider } from '@apollo/react-hooks';
@@ -20,7 +19,7 @@ client.query({
 
 const App = () => {
   return (
-    <div className="App">
+    <div>
         <ApolloProvider client={client}>
           <Layout />
         </ApolloProvider>
