@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/styles';
 import { Button, TextField } from '@material-ui/core';
 import { useMutation } from '@apollo/react-hooks';
-import { CREATE_USER_MUTATION } from '../Resolvers/Mutation';
+import { CREATE_USER_MUTATION } from '../../Resolvers/Mutation';
 
 const styles = makeStyles({
     container: {
@@ -34,7 +34,7 @@ const styles = makeStyles({
     }
 });
 
-const SignUp = () => {
+const SignUp = (props) => {
     const classes = styles();
     const [form, setForm] = useState({
         name: {
@@ -97,6 +97,12 @@ const SignUp = () => {
             
         }
     };
+
+    const goToSignIn = (e) => {
+        e.preventDefault();
+        props.history.replace('/');
+    };
+
     return(
         <div className={classes.container}>
             <form className={classes.form} onSubmit={(e) => {
@@ -120,6 +126,9 @@ const SignUp = () => {
                 ))}
                 <Button className={classes.button} type="submit">Sign Up</Button>
             </form>
+                <a href="/" onClick={(e) => goToSignIn(e)}>
+                    <h5>Go to Sign In!</h5>
+                </a>
         </div>
     );
 }

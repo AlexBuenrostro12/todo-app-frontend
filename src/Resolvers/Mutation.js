@@ -16,3 +16,17 @@ export const CREATE_USER_MUTATION = gql`
          }
      }
  `;
+
+ export const CREATE_TICKET = gql`
+   mutation CREATE_TICKET(
+      $title: String!
+      $email: String!
+   ) {
+      createTicket(
+         title: $title
+         owner: { connect: { email: $email } }
+      ) {
+         id
+      }
+   }
+ `;

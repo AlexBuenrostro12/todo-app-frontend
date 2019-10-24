@@ -5,6 +5,19 @@ export const SIGNIN = gql`
         signIn(where: { email: $email }, password: $password) {
             id 
             email
+            name
+        }
+    }
+`;
+
+export const TICKETS = gql`
+    query TICKETS {
+        tickets{
+            id
+            title
+            owner {
+                name
+            }
         }
     }
 `;

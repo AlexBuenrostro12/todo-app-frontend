@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/styles';
 import { Button, TextField } from '@material-ui/core';
 import { useLazyQuery } from '@apollo/react-hooks';
-import { SIGNIN } from '../Resolvers/Query';
+import { SIGNIN } from '../../Resolvers/Query';
+import { UserContext } from '../../context/LoggedUserContext';
 
 const styles = makeStyles({
     container: {
@@ -34,7 +35,7 @@ const styles = makeStyles({
     }
 });
 
-const SignIn = () => {
+const SignIn = (props) => {
     const classes = styles();
     const [form, setForm] = useState({
         email:{
@@ -74,18 +75,26 @@ const SignIn = () => {
 	};
 
     console.log('form: ', form);
+    console.log('props: ', props);
 
-    const [signIn, { data, error }] =  useLazyQuery(SIGNIN);
+    const [signIn, { data, loading = null, error }] =  useLazyQuery(SIGNIN);
 
     if (data) {
         setTimeout(() => {
-            setUser(data);
-        }, 100)
+            goToToDoHandler();
+        }, 1000)
     };
+    
     console.log('user: ', user);
+
     if (error){
         console.log('errro: ', error.message);
     }
+
+    const goToToDoHandler = () => {
+        setUser(data);
+        props.history.replace('/toDo');
+    };
 
     const signInHandler = () => {
         const signinVariables = {
@@ -95,30 +104,56 @@ const SignIn = () => {
         signIn({ variables: signinVariables });
     };
 
+    const goToSignUp = (e) => {
+        e.preventDefault();
+        props.history.replace('/signUp');
+    };
+
     return(
-        <div className={classes.container}>
-            <form className={classes.form} onSubmit={(e) => {
-                e.preventDefault();
-                signInHandler();
-            }}>
-                <h1>SIGN IN</h1>
-                {formMap.map(el => (
-                    <TextField
-                        key={el.id}
-                        id= {el.id}
-                        label={el.config.label}
-                        className={classes.textField}
-                        type={el.config.type}
-                        name={el.config.type}
-                        autoComplete={el.config.type}
-                        margin="normal"
-                        variant="outlined"
-                        onChange={(e) => inputChangeHandler(e, el.id)}
-                    />
-                ))}
-                <Button className={classes.button} type="submit">Sign In</Button>
-            </form>
-        </div>
+        <UserContext.Consumer>{context => {
+            const { setUserData } = context;
+            if (data && !loading){
+                const obj = {
+                    id: data.signIn.id,
+                    email: data.signIn.email,
+                    name: data.signIn.name,
+                }
+                setTimeout(() => {
+                    setUserData(obj);
+                }, 1000)
+            }
+            
+            return (
+                <div className={classes.container}>
+                    <form className={classes.form} onSubmit={(e) => {
+                        e.preventDefault();
+                        signInHandler();
+                    }}>
+                        <h1>SIGN IN</h1>
+                        {formMap.map(el => (
+                            <TextField
+                                key={el.id}
+                                id= {el.id}
+                                label={el.config.label}
+                                className={classes.textField}
+                                type={el.config.type}
+                                name={el.config.type}
+                                autoComplete={el.config.type}
+                                margin="normal"
+                                variant="outlined"
+                                onChange={(e) => inputChangeHandler(e, el.id)}
+                            />
+                        ))}
+                        <Button className={classes.button} type="submit">Sign In</Button>
+                    </form>
+                    <a href="/signUp" onClick={(e) => goToSignUp(e)}>
+                        <h5>Go to Sign Up!</h5>
+                    </a>
+                </div>
+            );
+        }}
+
+        </UserContext.Consumer>
     );
 }
 
