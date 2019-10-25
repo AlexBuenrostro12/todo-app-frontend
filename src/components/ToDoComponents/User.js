@@ -65,7 +65,7 @@ const User = (props) => {
 
     const logOut = (e) => {
         e.preventDefault();
-        props.history.replace('/signUp');
+        props.history.replace('/');
     };
 
     return (
