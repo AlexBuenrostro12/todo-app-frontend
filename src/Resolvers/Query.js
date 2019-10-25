@@ -28,6 +28,7 @@ export const SINGLE_TICKET = gql`
             id
             title
             owner{
+                email
                 name
             }
             comments{

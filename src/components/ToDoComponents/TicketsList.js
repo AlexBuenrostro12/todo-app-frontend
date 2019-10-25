@@ -43,7 +43,7 @@ const TicketsList = (props) => {
                 <h3>TODO TICKETS LIST</h3>
             </div>
             <div className={classes.ticketsList}>
-                {data && data.tickets.reverse().map(t => (
+                {data && data.tickets.map(t => (
                     <Paper 
                         key={t.id}
                         className={classes.paper}

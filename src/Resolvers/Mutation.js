@@ -30,3 +30,50 @@ export const CREATE_USER_MUTATION = gql`
       }
    }
  `;
+
+ export const EDIT_TICKET = gql`
+   mutation EDIT_TICKET(
+      $id: ID!
+      $title: String!
+   ) {
+      updateTicket(
+         where: { id: $id } 
+         data: { title: $title }) {
+         id
+      }
+   }
+ `;
+
+ export const ASSIGN_DEVELOPER = gql`
+   mutation ASSIGN_DEVELOPER(
+      $id: ID!
+      $email: String!
+   ) {
+      assignDeveloper(
+         where: { id: $id } 
+         data: {
+            developer: {
+               create: { 
+                  developedBy: { 
+                     connect: { 
+                        email: $email 
+                     } 
+                  } 
+               }
+            }
+         }
+      ) {
+         id
+      }
+   }
+ `;
+
+ export const DELETE_TICKET = gql `
+   mutation DELETE_TICKET(
+      $id: ID!
+   ) {
+      deleteTicket(where: { id: $id }) {
+         id
+      }
+   }
+ `;

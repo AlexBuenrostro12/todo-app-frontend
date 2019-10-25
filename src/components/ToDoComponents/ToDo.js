@@ -33,6 +33,8 @@ const ToDo = (props) => {
                         </Grid>
                         <Grid item>
                             <Ticket
+                                userId={user.id}
+                                userEmail={user.email}
                                 ticket={ticket} />
                         </Grid>
                     </Grid>
