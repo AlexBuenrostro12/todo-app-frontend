@@ -74,22 +74,13 @@ const SignIn = (props) => {
 		setForm(updatedForm);
 	};
 
-    console.log('form: ', form);
-    console.log('props: ', props);
-
-    const [signIn, { data, loading = null, error }] =  useLazyQuery(SIGNIN);
+    const [signIn, { data, loading = null }] =  useLazyQuery(SIGNIN);
 
     if (data) {
         setTimeout(() => {
             goToToDoHandler();
         }, 1000)
     };
-    
-    console.log('user: ', user);
-
-    if (error){
-        console.log('errro: ', error.message);
-    }
 
     const goToToDoHandler = () => {
         setUser(data);

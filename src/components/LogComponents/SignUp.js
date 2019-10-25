@@ -87,7 +87,6 @@ const SignUp = (props) => {
     
     
     const createUserHandler = async () => {
-        //setLoading(true);
         try {
             const response = await signUp({ variables: userVariebles });
             console.log('response: ', response);

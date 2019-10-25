@@ -78,8 +78,6 @@ const Ticket = (props) => {
         }
     },[props,singleTicket]);
 
-    console.log(data);
-
     const [newTitle, setNewTitle] = useState('');
     const [reviewData, setReviewDate] = useState('');
     const [disabledEdit, setDisabledEdit] = useState(true);
@@ -87,7 +85,6 @@ const Ticket = (props) => {
 
     const [commentTicket] = useMutation(COMMENT_TICKET);
     const commentHandler = async (ticketId) => {
-        console.log('editHandler');
         const commentVariables = {
             id: ticketId,
             comment: comment,
@@ -102,7 +99,6 @@ const Ticket = (props) => {
 
     const [updateTicket] = useMutation(EDIT_TICKET);
     const editHandler = async (data) => {
-        console.log('editHandler');
         const editTicketVariables = {
             id: data.ticket.id,
             title: newTitle === '' ? data.ticket.title : newTitle,
@@ -118,7 +114,6 @@ const Ticket = (props) => {
     };    
     const [assignDeveloper] = useMutation(ASSIGN_DEVELOPER);
     const beDeveloperHandler = async (ticketId) => {
-        console.log('beDeveloperHandler')
         const assignDeveloperVariables = {
             id: ticketId,
             email: props.userEmail
@@ -129,7 +124,6 @@ const Ticket = (props) => {
     
     const [deleteTicket] = useMutation(DELETE_TICKET);
     const deleteHandler = async (ticketId) => {
-        console.log('deleteHandler');
         const deletedTicket = await deleteTicket({ variables: { id: ticketId } });
         console.log('deletedTicket: ', deletedTicket);
     };        
