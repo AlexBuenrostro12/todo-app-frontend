@@ -5,9 +5,9 @@ export const UserContext = createContext();
 
 const LoggedUserProvider = (props) => {
     const [user, dispatchUser] = useReducer(LoggedUserReducer, {
-        id: 'dasfas',
-        name: 'Pepon',
-        email: 'pep@gmail.com',
+        id: '',
+        name: '',
+        email: '',
     });
 
     return (

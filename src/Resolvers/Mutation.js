@@ -21,10 +21,12 @@ export const CREATE_USER_MUTATION = gql`
    mutation CREATE_TICKET(
       $title: String!
       $email: String!
+      $review: DateTime!
    ) {
       createTicket(
          title: $title
          owner: { connect: { email: $email } }
+         review: $review
       ) {
          id
       }
@@ -35,10 +37,15 @@ export const CREATE_USER_MUTATION = gql`
    mutation EDIT_TICKET(
       $id: ID!
       $title: String!
+      $review: DateTime!
    ) {
       updateTicket(
          where: { id: $id } 
-         data: { title: $title }) {
+         data: { 
+            title: $title
+            review: $review 
+         }
+      ) {
          id
       }
    }

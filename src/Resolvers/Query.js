@@ -43,6 +43,7 @@ export const SINGLE_TICKET = gql`
                     name
                 }
             }
+            review
         }
     }
 `;

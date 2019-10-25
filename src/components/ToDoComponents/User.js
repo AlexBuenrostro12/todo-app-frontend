@@ -32,11 +32,17 @@ const styles = makeStyles({
         height: 48,
         padding: '0 30px',
     },
+    inputsContainer: {
+        display: 'flex',
+        justifyContent: 'space-around',
+        flexDirection: 'column',
+    }
 });
 
 const User = (props) => {
     const classes = styles();
     const [todo, setTodo] = useState('');
+    const [reviewDate, setReviewDate] = useState('');
 
     
     const [createTicket] = useMutation(CREATE_TICKET);
@@ -44,7 +50,8 @@ const User = (props) => {
     const createTicketHandler = async () => {
         const ticketVariables = {
             title: todo,
-            email: props.email
+            email: props.email,
+            review: reviewDate,
         }
         try {
             const response = await createTicket({ variables: ticketVariables });
@@ -68,16 +75,30 @@ const User = (props) => {
                 createTicketHandler();
             }}>
                 <h3>CREATE TICKET</h3>
-                <TextField
-                    id= "Ticket"
-                    label="New To Do Ticket"
-                    className={classes.textField}
-                    type="normal"
-                    name="normal"
-                    margin="normal"
-                    variant="outlined"
-                    onChange={(e) => setTodo(e.target.value)}
-                />
+                <div className={classes.inputsContainer}>
+                    <TextField
+                        id= "Ticket"
+                        label="New To Do Ticket"
+                        className={classes.textField}
+                        type="normal"
+                        name="normal"
+                        margin="normal"
+                        variant="outlined"
+                        onChange={(e) => setTodo(e.target.value)}
+                    />
+                    <TextField
+                        id= "Review"
+                        label="Review date"
+                        type="datetime-local"
+                        defaultValue="2019-01-25T10:30"
+                        className={classes.textField}
+                        InputLabelProps={{
+                        shrink: true,
+                        }}
+                        onChange={(e) => setReviewDate(e.target.value)}
+
+                    />
+                </div>
                 <div>
                     <Button className={classes.button} type="submit">Create</Button>
                 </div>

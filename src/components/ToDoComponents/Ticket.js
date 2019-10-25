@@ -77,6 +77,7 @@ const Ticket = (props) => {
     console.log(data);
 
     const [newTitle, setNewTitle] = useState('');
+    const [reviewData, setReviewDate] = useState('');
     const [disabledEdit, setDisabledEdit] = useState(true);
     const [comment, setComment] = useState('');
 
@@ -96,11 +97,12 @@ const Ticket = (props) => {
     };
 
     const [updateTicket] = useMutation(EDIT_TICKET);
-    const editHandler = async (idTicket) => {
+    const editHandler = async (data) => {
         console.log('editHandler');
         const editTicketVariables = {
-            id: idTicket,
-            title: newTitle
+            id: data.ticket.id,
+            title: newTitle === '' ? data.ticket.title : newTitle,
+            review: reviewData === '' ? data.ticket.review : reviewData,
         };        
         const updatedTicket = await updateTicket({ variables: editTicketVariables });
         console.log('updatedTicket: ', updatedTicket);
@@ -137,7 +139,7 @@ const Ticket = (props) => {
                 {data && data.ticket && !loading && <Card className={classes.card}>
                     <CardContent>
                         <Typography className={classes.title} color="textSecondary" gutterBottom>
-                            By: {data.ticket.owner.name}
+                            Owner: {data.ticket.owner.name}
                         </Typography>
 
                         <div className={classes.ticketTitleContainer}>
@@ -156,14 +158,33 @@ const Ticket = (props) => {
                                     <Button
                                         className={classes.save} 
                                         size="small"
-                                        onClick={() => editHandler(data.ticket.id)}
+                                        onClick={() => editHandler(data)}
                                     >
                                         Save
                                     </Button>
                                 )}
                             </div>
                         </div>
-
+                        {!disabledEdit ? (
+                            <TextField
+                                id= "Review"
+                                label="Review date"
+                                type="datetime-local"
+                                defaultValue="2019-01-25T10:30"
+                                disabled={disabledEdit}
+                                InputLabelProps={{
+                                shrink: true,
+                                }}
+                                onChange={(e) => setReviewDate(e.target.value)}
+                            />
+                        ) :  (
+                            <Typography
+                                    variant="body2" component="p"
+                                    className={classes.comments}
+                            >
+                                Review: {data.ticket.review}
+                            </Typography>
+                        )}
                         <Typography className={classes.pos} color="textSecondary">
                             Commets
                         </Typography>

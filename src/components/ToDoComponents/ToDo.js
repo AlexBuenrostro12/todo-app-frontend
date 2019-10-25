@@ -13,6 +13,9 @@ const ToDo = (props) => {
             <TicketListContext.Consumer>{(ticktListContext) => {
                 const { user } = userContext;
                 const { ticket, dispatchTicket } = ticktListContext;
+                if (user.id === '' || user.email === '' || user.name === ''){
+                    props.history.replace('/');
+                }
                 return (
                     <Grid
                         container
