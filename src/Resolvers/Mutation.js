@@ -77,3 +77,27 @@ export const CREATE_USER_MUTATION = gql`
       }
    }
  `;
+
+ export const COMMENT_TICKET = gql`
+   mutation COMMENT_TICKET(
+      $id: ID!
+      $comment: String!
+      $email: String!
+   ) {
+      commentTicket(
+         where: { id: $id } 
+         data: {
+            comments: {
+               create: {
+                  comment: $comment
+                  commentedBy: {
+                     connect: { email: $email }
+                  }
+               }
+            }
+         }
+      ) {
+         id
+      }
+   }
+ `;   

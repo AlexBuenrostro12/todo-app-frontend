@@ -3,7 +3,7 @@ import { makeStyles } from '@material-ui/styles';
 import { Card, CardActions, CardContent, Typography, Button, TextField } from '@material-ui/core';
 import { useLazyQuery, useMutation } from '@apollo/react-hooks';
 import { SINGLE_TICKET } from '../../Resolvers/Query';
-import { EDIT_TICKET, ASSIGN_DEVELOPER, DELETE_TICKET } from '../../Resolvers/Mutation';
+import { EDIT_TICKET, ASSIGN_DEVELOPER, DELETE_TICKET, COMMENT_TICKET } from '../../Resolvers/Mutation';
 
 const styles = makeStyles({
     ticketContainer: {
@@ -11,7 +11,7 @@ const styles = makeStyles({
         flexDirection: 'column',
         justifyContent: 'space-between',
         padding: '2rem',
-        alignItems: 'center',
+        alignItems: 'flex-start',
     },
     titleContainer: {
         marginBottom: '5rem',
@@ -42,13 +42,21 @@ const styles = makeStyles({
         marginBottom: '1rem',
     },
     save: {
-        marginLeft: '.5rem'
+        marginLeft: '1rem'
     },
     ticketTitleContainer: {
         display: 'flex',
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-around'
+    },
+    saveButtonContainer: {
+        marginLeft: '5rem'
+    },
+    listOfComments: {
+        width: '100%',
+        height: '12rem',
+        overflow: 'scroll'
     }
 });
 
@@ -58,19 +66,33 @@ const Ticket = (props) => {
         variables: { id: props.ticket ?  props.ticket : '' },
         pollInterval: 500
     });
+
     useEffect(() => {
         singleTicket();
         setDisabledEdit(true);
         setNewTitle('');
+        setComment('');
     },[props.ticket]);
 
     console.log(data);
 
     const [newTitle, setNewTitle] = useState('');
     const [disabledEdit, setDisabledEdit] = useState(true);
-    
-    const commentHandler = () => {
-        console.log('editHandler')
+    const [comment, setComment] = useState('');
+
+    const [commentTicket] = useMutation(COMMENT_TICKET);
+    const commentHandler = async (ticketId) => {
+        console.log('editHandler');
+        const commentVariables = {
+            id: ticketId,
+            comment: comment,
+            email: props.userEmail,
+        };
+
+        const commentedTicket = await commentTicket({ variables: commentVariables });
+        console.log('commentedTicket: ', commentedTicket);
+        if (commentTicket)
+            setComment('');
     };
 
     const [updateTicket] = useMutation(EDIT_TICKET);
@@ -129,8 +151,8 @@ const Ticket = (props) => {
                                 variant="outlined"
                                 onChange={(e) => setNewTitle(e.target.value)}
                             />
-                            {!disabledEdit && (
-                                <div>
+                            <div className={disabledEdit ? classes.saveButtonContainer :  null}>
+                                {!disabledEdit && (
                                     <Button
                                         className={classes.save} 
                                         size="small"
@@ -138,24 +160,47 @@ const Ticket = (props) => {
                                     >
                                         Save
                                     </Button>
-                                </div>
-                            )}
+                                )}
+                            </div>
                         </div>
 
                         <Typography className={classes.pos} color="textSecondary">
                             Commets
                         </Typography>
-                        {data.ticket.comments.map(c => (
-                            <Typography
-                                key={c.id}
-                                variant="body2" component="p"
-                                className={classes.comments}
-                            >
-                                Comment by: {c.commentedBy.name}
-                                <br/>
-                                {c.comment}
-                            </Typography>
-                        ))}
+                        {data.ticket.comments.length !== 0 && <div className={classes.listOfComments}>
+                            {data.ticket.comments.map(c => (
+                                <Typography
+                                    key={c.id}
+                                    variant="body2" component="p"
+                                    className={classes.comments}
+                                >
+                                    By: {c.commentedBy.name}
+                                    <br/>
+                                    {c.comment}
+                                </Typography>
+                            ))}
+                        </div>}
+                        <div className={classes.ticketTitleContainer}>
+                            <TextField
+                                label="Comment"
+                                value={comment}
+                                type="normal"
+                                name="normal"
+                                margin="normal"
+                                variant="outlined"
+                                onChange={(e) => setComment(e.target.value)}
+                            />
+                            <div>
+                                <Button
+                                    className={classes.save} 
+                                    size="small"
+                                    onClick={() => commentHandler(data.ticket.id)}
+                                >
+                                    Comment
+                                </Button>
+                            </div>
+                        </div>
+
                         <Typography className={classes.pos} color="textSecondary">
                             Developed by
                         </Typography>
