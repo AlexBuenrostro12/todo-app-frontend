@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/styles';
-import { Button, TextField, Grid } from '@material-ui/core';
+import { Button, TextField } from '@material-ui/core';
 import { useMutation } from '@apollo/react-hooks';
 import { CREATE_TICKET } from '../../Resolvers/Mutation';
 
@@ -38,8 +38,9 @@ const User = (props) => {
     const classes = styles();
     const [todo, setTodo] = useState('');
 
+    
     const [createTicket] = useMutation(CREATE_TICKET);
-
+    
     const createTicketHandler = async () => {
         const ticketVariables = {
             title: todo,
@@ -78,7 +79,7 @@ const User = (props) => {
                     onChange={(e) => setTodo(e.target.value)}
                 />
                 <div>
-                    <Button className={classes.button} type="submit">Sign In</Button>
+                    <Button className={classes.button} type="submit">Create</Button>
                 </div>
             </form>
         </div>

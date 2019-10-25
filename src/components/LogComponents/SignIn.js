@@ -111,7 +111,7 @@ const SignIn = (props) => {
 
     return(
         <UserContext.Consumer>{context => {
-            const { setUserData } = context;
+            const { dispatchUser } = context;
             if (data && !loading){
                 const obj = {
                     id: data.signIn.id,
@@ -119,7 +119,7 @@ const SignIn = (props) => {
                     name: data.signIn.name,
                 }
                 setTimeout(() => {
-                    setUserData(obj);
+                    dispatchUser({ type: 'SET_USER', user: { ...obj } });
                 }, 1000)
             }
             

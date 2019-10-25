@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { makeStyles } from '@material-ui/styles';
-import { Paper, Typography } from '@material-ui/core';
-import { useLazyQuery, useQuery } from '@apollo/react-hooks';
+import { Paper, Typography, Button } from '@material-ui/core';
+import { useQuery } from '@apollo/react-hooks';
 import { TICKETS } from '../../Resolvers/Query';
 
 const styles = makeStyles({
@@ -23,31 +23,31 @@ const styles = makeStyles({
         justifyContent: 'space-around',
         alignItems: 'center',
         padding: '2rem',
-        overflow: 'auto'
+        overflow: 'scroll',
+        width: '100%',
+        height: '20rem',
     },
     paper: {
         padding: '1rem',
         margin: '1rem',
-    }
+        cursor: 'pointer',
+    },
 });
 
 const TicketsList = (props) => {
     const classes = styles();
-
-    console.log('refreshList: ', props.refreshList);
-    const { loading = null, error, data } = useQuery(TICKETS);
-    console.log('data: ', data, loading, error);
-  
+    const { data, loading, error } = useQuery(TICKETS, { pollInterval: 200 });
     return (
         <div className={classes.container}>
             <div className={classes.titleContainer}>
                 <h3>TODO TICKETS LIST</h3>
             </div>
             <div className={classes.ticketsList}>
-                {data && data.tickets.map(t => (
+                {data && data.tickets.reverse().map(t => (
                     <Paper 
                         key={t.id}
                         className={classes.paper}
+                        onClick={() => props.dispatchTicket({ type: 'SHOW_TICKET', id: t.id })}
                     >
                         <Typography variant="h5" component="h3">
                             {t.title}
@@ -59,7 +59,7 @@ const TicketsList = (props) => {
                 ))}
             </div>
         </div>
-    )
+    );
 }
 
 export default TicketsList;

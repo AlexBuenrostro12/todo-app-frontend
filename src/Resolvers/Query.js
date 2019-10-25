@@ -21,3 +21,23 @@ export const TICKETS = gql`
         }
     }
 `;
+
+export const SINGLE_TICKET = gql`
+    query SINGLE_TICKET($id: ID!) {
+        ticket(where: { id: $id }) {
+            id
+            title
+            comments{
+                comment
+                commentedBy{
+                    name
+                }
+            }
+            developer{
+                developedBy{
+                    name
+                }
+            }
+        }
+    }
+`;

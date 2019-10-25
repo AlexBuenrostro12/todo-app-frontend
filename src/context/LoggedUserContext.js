@@ -1,24 +1,20 @@
-import React, { useState, createContext } from 'react';
+import React, { createContext, useReducer } from 'react';
+import { LoggedUserReducer } from '../reducers/LoggedUserReducer';
 
 export const UserContext = createContext();
 
 const LoggedUserProvider = (props) => {
-    const [user, setUser] = useState({
+    const [user, dispatchUser] = useReducer(LoggedUserReducer, {
         id: 'dasfas',
         name: 'Pepon',
         email: 'pep@gmail.com',
     });
 
-    const setUserData = (loggedUser) => {
-        const updatedUser = { ...user }
-        for (let key in updatedUser) {
-            updatedUser[key] = loggedUser[key];
-        }
-        setUser(updatedUser);
-    };
-
     return (
-        <UserContext.Provider value={{ ...user, setUserData: setUserData }}>
+        <UserContext.Provider value={{ 
+            user, 
+            dispatchUser, 
+        }}>
             {props.children}
         </UserContext.Provider>
     );
