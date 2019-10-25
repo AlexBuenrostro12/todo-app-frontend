@@ -62,17 +62,21 @@ const styles = makeStyles({
 
 const Ticket = (props) => {
     const classes = styles();
-    const [singleTicket, { data, loading = null, error }] = useLazyQuery(SINGLE_TICKET, { 
+    const [singleTicket, { data, loading = null }] = useLazyQuery(SINGLE_TICKET, { 
         variables: { id: props.ticket ?  props.ticket : '' },
         pollInterval: 500
     });
 
     useEffect(() => {
-        singleTicket();
-        setDisabledEdit(true);
-        setNewTitle('');
-        setComment('');
-    },[props.ticket]);
+        if (props.userId === '' && props.userEmail === '') {
+            props.history.replace('/');
+        } else {
+            singleTicket();
+            setDisabledEdit(true);
+            setNewTitle('');
+            setComment('');
+        }
+    },[props,singleTicket]);
 
     console.log(data);
 

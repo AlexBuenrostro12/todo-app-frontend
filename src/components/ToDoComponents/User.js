@@ -56,11 +56,16 @@ const User = (props) => {
         try {
             const response = await createTicket({ variables: ticketVariables });
             console.log('response: ', response);
-            
+            setTodo('');
         } catch (error) {
             console.log('error: ', error);
             
         }
+    };
+
+    const logOut = (e) => {
+        e.preventDefault();
+        props.history.replace('/signUp');
     };
 
     return (
@@ -69,6 +74,9 @@ const User = (props) => {
                 <h3>USER DATA</h3>
                 <h4>{props.email}</h4>
                 <h4>{props.name}</h4>
+                <a href="/" onClick={(e) => logOut(e)}>
+                    <h5>Log out!</h5>
+                </a>
             </div>
             <form className={classes.createTicket} onSubmit={(e) => {
                 e.preventDefault();
@@ -84,13 +92,13 @@ const User = (props) => {
                         name="normal"
                         margin="normal"
                         variant="outlined"
+                        value={todo}
                         onChange={(e) => setTodo(e.target.value)}
                     />
                     <TextField
                         id= "Review"
                         label="Review date"
                         type="datetime-local"
-                        defaultValue="2019-01-25T10:30"
                         className={classes.textField}
                         InputLabelProps={{
                         shrink: true,

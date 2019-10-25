@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { Grid } from '@material-ui/core';
 import { UserContext } from '../../context/LoggedUserContext';
 import { TicketListContext } from '../../context/TicketListContext';
@@ -13,9 +13,6 @@ const ToDo = (props) => {
             <TicketListContext.Consumer>{(ticktListContext) => {
                 const { user } = userContext;
                 const { ticket, dispatchTicket } = ticktListContext;
-                if (user.id === '' || user.email === '' || user.name === ''){
-                    props.history.replace('/');
-                }
                 return (
                     <Grid
                         container
@@ -27,7 +24,8 @@ const ToDo = (props) => {
                             <User 
                                 id={user.id}
                                 email={user.email}
-                                name={user.name} />
+                                name={user.name}
+                                history={props.history} />
                                 
                         </Grid>
                         <Grid item>
@@ -38,7 +36,8 @@ const ToDo = (props) => {
                             <Ticket
                                 userId={user.id}
                                 userEmail={user.email}
-                                ticket={ticket} />
+                                ticket={ticket}
+                                history={props.history} />
                         </Grid>
                     </Grid>
                 );

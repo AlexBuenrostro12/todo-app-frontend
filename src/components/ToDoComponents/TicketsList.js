@@ -1,6 +1,6 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/styles';
-import { Paper, Typography, Button } from '@material-ui/core';
+import { Paper, Typography } from '@material-ui/core';
 import { useQuery } from '@apollo/react-hooks';
 import { TICKETS } from '../../Resolvers/Query';
 
@@ -36,7 +36,7 @@ const styles = makeStyles({
 
 const TicketsList = (props) => {
     const classes = styles();
-    const { data, loading, error } = useQuery(TICKETS, { pollInterval: 200 });
+    const { data } = useQuery(TICKETS, { pollInterval: 200 });
     return (
         <div className={classes.container}>
             <div className={classes.titleContainer}>
