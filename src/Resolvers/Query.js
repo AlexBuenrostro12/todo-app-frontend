@@ -27,7 +27,11 @@ export const SINGLE_TICKET = gql`
         ticket(where: { id: $id }) {
             id
             title
+            owner{
+                name
+            }
             comments{
+                id
                 comment
                 commentedBy{
                     name
